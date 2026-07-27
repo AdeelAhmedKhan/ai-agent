@@ -2,8 +2,6 @@
 
 Take-home voice agent that registers U.S. patient demographics over a natural conversation (Vapi), persists them in Supabase Postgres, and exposes a small REST API for reviewers.
 
-> Synthetic / demo data only. Not a HIPAA product. Do not store real patient PHI.
-
 ## Submission
 
 
