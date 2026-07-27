@@ -1,0 +1,10 @@
+{
+  "intents": [
+    "Appointment",
+    "Billing",
+    "Support",
+    "Sales",
+    "General Question",
+    "Unknown"
+  ]
+}

@@ -1,0 +1,24 @@
+# Minimal Supabase CLI config for migrations.
+# Full local stack (`npm run db:start`) is optional and requires Docker.
+# Prefer hosted Supabase + `npm run db:push` when Docker is unavailable.
+
+project_id = "voice-ai-agent"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 15
+
+[db.migrations]
+enabled = true
+schema_paths = []
+
+[studio]
+enabled = true
+port = 54323

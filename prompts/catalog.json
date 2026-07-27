@@ -1,0 +1,7 @@
+{
+  "system": "system/patient-registration",
+  "greeting": "greeting/default",
+  "fallback": "fallback/default",
+  "transfer": "transfer/default",
+  "summary": "summary/default"
+}

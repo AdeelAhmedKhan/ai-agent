@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "vapi": {
+      "command": "node",
+      "args": ["scripts/vapi-mcp.mjs"]
+    }
+  }
+}

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Patient Registry · Intake</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Sora:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/registry/styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <div id="auth-gate" class="gate">
+      <div class="gate-panel">
+        <p class="eyebrow">Patient Registration</p>
+        <h1>Intake Registry</h1>
+        <p class="lede">
+          Enter the admin API key from your <code>.env</code>
+          (<code>ADMIN_API_KEY</code>) to view registered patients.
+        </p>
+        <form id="auth-form">
+          <label for="api-key">API key</label>
+          <input
+            id="api-key"
+            name="apiKey"
+            type="password"
+            autocomplete="off"
+            placeholder="x-api-key value"
+            required
+          />
+          <p id="auth-error" class="error" hidden></p>
+          <button type="submit">Open registry</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="app" class="app is-hidden">
+      <header class="top">
+        <div>
+          <p class="eyebrow">Patient Registration</p>
+          <h1>Intake Registry</h1>
+        </div>
+        <div class="top-actions">
+          <button type="button" id="refresh-btn" class="ghost">Refresh</button>
+          <button type="button" id="signout-btn" class="ghost">Sign out</button>
+        </div>
+      </header>
+
+      <section class="toolbar">
+        <div class="filters">
+          <label>
+            <span>Last name</span>
+            <input id="filter-last-name" type="search" placeholder="e.g. Khan" />
+          </label>
+          <label>
+            <span>Phone</span>
+            <input id="filter-phone" type="search" placeholder="10-digit" />
+          </label>
+          <label>
+            <span>Date of birth</span>
+            <input id="filter-dob" type="search" placeholder="MM/DD/YYYY" />
+          </label>
+        </div>
+        <p id="status-line" class="status">Loading…</p>
+      </section>
+
+      <main class="layout">
+        <section class="list-panel" aria-label="Patient list">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>DOB</th>
+                  <th>Phone</th>
+                  <th>City</th>
+                  <th>Registered</th>
+                </tr>
+              </thead>
+              <tbody id="patient-rows"></tbody>
+            </table>
+          </div>
+          <p id="empty-state" class="empty" hidden>No patients match these filters.</p>
+        </section>
+
+        <aside id="detail-panel" class="detail-panel" hidden>
+          <div class="detail-head">
+            <div>
+              <p class="eyebrow">Record</p>
+              <h2 id="detail-name">—</h2>
+            </div>
+            <button type="button" id="close-detail" class="ghost" aria-label="Close details">
+              Close
+            </button>
+          </div>
+          <dl id="detail-fields" class="detail-fields"></dl>
+          <div class="detail-actions">
+            <button type="button" id="delete-btn" class="danger">Soft-delete patient</button>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <script src="/registry/app.js" type="module"></script>
+  </body>
+</html>
