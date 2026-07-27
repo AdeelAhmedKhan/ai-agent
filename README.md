@@ -4,16 +4,52 @@ Take-home voice agent that registers U.S. patient demographics over a natural co
 
 > Synthetic / demo data only. Not a HIPAA product. Do not store real patient PHI.
 
-## Live demo (fill in for submission)
+## Submission
+
+### Send us
 
 | Item | Value |
 |---|---|
-| **API base URL** | `https://<your-host>` (Railway or ngrok) |
-| **Phone number** | _Pending — Vapi/Twilio U.S. number (phase 2)_ |
-| **Patients API key** | `x-api-key: <ADMIN_API_KEY>` |
-| **Vapi webhook** | `https://<your-host>/webhooks/vapi` |
+| **Repository URL** | https://github.com/AdeelAhmedKhan/ai-agent |
+| **Phone number to call** | +1 (346) 598-6559 |
+| **API base URL** | https://api-production-97dea.up.railway.app |
+| **Credentials / notes** | See [Testing credentials](#testing-credentials) |
 
-If a dialable number is not ready, use **Vapi Dashboard → Talk** against the assistant with Server URL pointed at the webhook above. See [Testing without a phone number](#testing-without-a-phone-number).
+### Live demo
+
+| Item | Value |
+|---|---|
+| **Phone number** | +1 (346) 598-6559 |
+| **Browser voice demo** | [Talk in browser (Vapi)](https://vapi.ai?demo=true&shareKey=bb256660-79b4-45ef-a26f-42d79b7d6ed3&assistantId=5bfc0377-50bb-405e-8444-4cd35a48c71d) |
+| **API base URL** | https://api-production-97dea.up.railway.app |
+| **Health** | https://api-production-97dea.up.railway.app/health |
+| **Patient registry UI** | https://api-production-97dea.up.railway.app/registry |
+| **Patients REST API** | https://api-production-97dea.up.railway.app/patients |
+| **Vapi webhook** | https://api-production-97dea.up.railway.app/webhooks/vapi |
+
+### Testing credentials
+
+| Credential | Value / how to use |
+|---|---|
+| **`x-api-key` (`ADMIN_API_KEY`)** | `dev-d2667890-1670-4234-a342-143478901234` |
+| **Registry UI** | Open `/registry` → paste the API key above when prompted |
+| **Vapi webhook auth** | Already configured on the live assistant/tools — not needed for phone or REST testing |
+
+Example API check:
+
+```bash
+curl -s https://api-production-97dea.up.railway.app/patients \
+  -H "x-api-key: dev-d2667890-1670-4234-a342-143478901234"
+```
+
+### How to review
+
+1. **Call** +1 (346) 598-6559 — register a (synthetic) patient by voice, confirm read-back, hang up
+2. Or use the **[browser voice demo](https://vapi.ai?demo=true&shareKey=bb256660-79b4-45ef-a26f-42d79b7d6ed3&assistantId=5bfc0377-50bb-405e-8444-4cd35a48c71d)**
+3. **Verify** the record in the [registry UI](https://api-production-97dea.up.railway.app/registry) or `GET /patients` with the API key above
+4. Call again with the same phone number to exercise returning-caller / update flow
+
+Local setup (optional): [Quick start](#quick-start).
 
 ## Tech stack (why)
 
@@ -121,16 +157,15 @@ Invalid fields are re-prompted specifically. Failed DB writes return a tool erro
 
 Default agent tools (migration `00004_patients.sql`): patient tools + `schedule_appointment`.
 
-## Testing without a phone number
+## Local Vapi testing (optional)
 
-Per challenge FAQ — vendor/number delays are documented, not fatal:
+Production uses Railway + the live phone / [browser demo](https://vapi.ai?demo=true&shareKey=bb256660-79b4-45ef-a26f-42d79b7d6ed3&assistantId=5bfc0377-50bb-405e-8444-4cd35a48c71d). For local debugging:
 
 1. `npm run db:push && npm run dev:tunnel`
-2. Point Vapi assistant **Server URL** at `https://<ngrok>/webhooks/vapi` with Bearer = `VAPI_WEBHOOK_SECRET`
-3. Attach function tools matching local names (`lookup_patient_by_phone`, `register_patient`, `update_patient`, optional `schedule_appointment`)
-4. Use Vapi **Talk** to run a registration; verify with `GET /patients`
+2. Temporarily point Vapi Server URL at `https://<ngrok>/webhooks/vapi` with Bearer = `VAPI_WEBHOOK_SECRET`
+3. Keep tool names identical to local registry (`lookup_patient_by_phone`, `register_patient`, `update_patient`, `schedule_appointment`)
 
-Guide: [`docs/vapi-mcp-tools.md`](docs/vapi-mcp-tools.md), [`docs/vapi-greeting-test.md`](docs/vapi-greeting-test.md).
+Guide: [`docs/vapi-mcp-tools.md`](docs/vapi-mcp-tools.md).
 
 ## Other HTTP endpoints
 
@@ -168,19 +203,36 @@ Coverage includes patient validators (name/DOB/phone/state/zip), confirm-gate on
 
 ## Known limitations / trade-offs
 
-- **No dialable U.S. number yet** — web Talk + ngrok for e2e; number provisioning is next.
+- Live dial-in: **+1 (346) 598-6559**; browser demo also available via the Vapi share link above.
 - Live call LLM/voice run on **Vapi**; backend LLM keys power optional server-side features.
 - Appointment scheduling tool is **mocked**.
 - Soft-delete hides rows from list/get; phone uniqueness applies to active rows only.
 - ConversationService / intent detection are not required on the voice registration path.
 - Not HIPAA compliant (by design for this assessment).
 
+## Railway
+
+Live service: **https://api-production-97dea.up.railway.app**
+
+```bash
+npx @railway/cli login
+npx @railway/cli link          # project voice-ai-agent / service api
+npx @railway/cli up -y --service api
+npx @railway/cli domain --service api
+```
+
+Redeploy after code changes with `npx @railway/cli up -y --service api`.
+
+Point Vapi assistant **Server URL** and tool servers at:
+
+`https://api-production-97dea.up.railway.app/webhooks/vapi`
+
+(Bearer = `VAPI_WEBHOOK_SECRET`)
+
 ## Next steps
 
-1. Provision a Vapi/Twilio U.S. number and document it in the Live demo table above
-2. Deploy to Railway with production env + stable webhook URL
-3. Optional bonuses: Spanish switch, transcript linked to `patient_id` (registry UI at `/registry`)
-4. Wire end-of-call transcript into `ConversationService` if reviewers want call history
+1. Optional: Spanish switch, transcript linked to `patient_id`, ConversationService on the webhook path
+2. Rotate `ADMIN_API_KEY` after the review window if the repo stays public
 
 ## Project layout
 

@@ -70,8 +70,9 @@ Assistant: **Patient Registration Agent** (`5bfc0377-50bb-405e-8444-4cd35a48c71d
 | `update_patient` | `17a31a72-d43a-48e2-b0a4-993e38a5f2a2` |
 | `schedule_appointment` | `3981674e-59db-4f16-a659-69210acbbc7c` |
 
-Server URL: `https://lanky-factsheet-cavity.ngrok-free.dev/webhooks/vapi`  
-Bearer must match `VAPI_WEBHOOK_SECRET` in `.env`.
+Production Server URL: `https://api-production-97dea.up.railway.app/webhooks/vapi`  
+(Local ngrok still fine for offline debugging.)  
+Bearer must match `VAPI_WEBHOOK_SECRET` in `.env` / Railway.
 
 Legacy mocked tools still in the org (not attached to the registration assistant): `get_business_hours`, `lookup_knowledge`, `transfer_to_human`.
 

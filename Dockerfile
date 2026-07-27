@@ -6,6 +6,8 @@ RUN npm ci
 COPY tsconfig.json ./
 COPY src ./src
 COPY prompts ./prompts
+COPY public ./public
+COPY config ./config
 RUN npm run build && npm prune --omit=dev
 
 FROM node:22-alpine AS runner
@@ -15,6 +17,8 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prompts ./prompts
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/config ./config
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD wget -qO- http://127.0.0.1:3000/health || exit 1

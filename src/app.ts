@@ -40,6 +40,9 @@ export function createApp(container: AppContainer): express.Application {
   app.use(attachRequestId);
 
   // UI at /registry (separate from REST /patients)
+  app.get('/', (_req, res) => {
+    res.redirect(302, '/registry');
+  });
   app.use('/registry', createRegistryRoutes(publicDir));
   app.get(['/dashboard', '/dashboard/'], (_req, res) => {
     res.redirect(302, '/registry');
