@@ -6,34 +6,38 @@ Take-home voice agent that registers U.S. patient demographics over a natural co
 
 ## Submission
 
-### Send us
 
-| Item | Value |
-|---|---|
-| **Repository URL** | https://github.com/AdeelAhmedKhan/ai-agent |
-| **Phone number to call** | +1 (346) 598-6559 |
-| **API base URL** | https://api-production-97dea.up.railway.app |
-| **Credentials / notes** | See [Testing credentials](#testing-credentials) |
+| Item                     | Value                                                                                      |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| **Repository URL**       | [https://github.com/AdeelAhmedKhan/ai-agent](https://github.com/AdeelAhmedKhan/ai-agent)   |
+| **Phone number to call** | +1 (346) 598-6559                                                                          |
+| **API base URL**         | [https://api-production-97dea.up.railway.app](https://api-production-97dea.up.railway.app) |
+| **Credentials / notes**  | See [Testing credentials](#testing-credentials)                                            |
+
 
 ### Live demo
 
-| Item | Value |
-|---|---|
-| **Phone number** | +1 (346) 598-6559 |
-| **Browser voice demo** | [Talk in browser (Vapi)](https://vapi.ai?demo=true&shareKey=bb256660-79b4-45ef-a26f-42d79b7d6ed3&assistantId=5bfc0377-50bb-405e-8444-4cd35a48c71d) |
-| **API base URL** | https://api-production-97dea.up.railway.app |
-| **Health** | https://api-production-97dea.up.railway.app/health |
-| **Patient registry UI** | https://api-production-97dea.up.railway.app/registry |
-| **Patients REST API** | https://api-production-97dea.up.railway.app/patients |
-| **Vapi webhook** | https://api-production-97dea.up.railway.app/webhooks/vapi |
+
+| Item                    | Value                                                                                                                                              |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Phone number**        | +1 (346) 598-6559                                                                                                                                  |
+| **Browser voice demo**  | [Talk in browser (Vapi)](https://vapi.ai?demo=true&shareKey=bb256660-79b4-45ef-a26f-42d79b7d6ed3&assistantId=5bfc0377-50bb-405e-8444-4cd35a48c71d) |
+| **API base URL**        | [https://api-production-97dea.up.railway.app](https://api-production-97dea.up.railway.app)                                                         |
+| **Health**              | [https://api-production-97dea.up.railway.app/health](https://api-production-97dea.up.railway.app/health)                                           |
+| **Patient registry UI** | [https://api-production-97dea.up.railway.app/registry](https://api-production-97dea.up.railway.app/registry)                                       |
+| **Patients REST API**   | [https://api-production-97dea.up.railway.app/patients](https://api-production-97dea.up.railway.app/patients)                                       |
+| **Vapi webhook**        | [https://api-production-97dea.up.railway.app/webhooks/vapi](https://api-production-97dea.up.railway.app/webhooks/vapi)                             |
+
 
 ### Testing credentials
 
-| Credential | Value / how to use |
-|---|---|
-| **`x-api-key` (`ADMIN_API_KEY`)** | `dev-d2667890-1670-4234-a342-143478901234` |
-| **Registry UI** | Open `/registry` → paste the API key above when prompted |
-| **Vapi webhook auth** | Already configured on the live assistant/tools — not needed for phone or REST testing |
+
+| Credential                        | Value / how to use                                                                    |
+| --------------------------------- | ------------------------------------------------------------------------------------- |
+| **`x-api-key` (`ADMIN_API_KEY`)** | `dev-d2667890-1670-4234-a342-143478901234`                                            |
+| **Registry UI**                   | Open `/registry` → paste the API key above when prompted                              |
+| **Vapi webhook auth**             | Already configured on the live assistant/tools — not needed for phone or REST testing |
+
 
 Example API check:
 
@@ -53,13 +57,15 @@ Local setup (optional): [Quick start](#quick-start).
 
 ## Tech stack (why)
 
-| Layer | Choice | Justification |
-|---|---|---|
-| Telephony + voice | **Vapi** | Fastest path to STT/TTS + tool calling within a short build window |
-| Backend | **Node.js + Express + TypeScript** | Clear layers, fast iteration, strong typing |
-| LLM (server-side) | **Groq / Dashscope** (OpenAI-compatible) | Used for optional server features; live call LLM is configured on the Vapi assistant |
-| Database | **Supabase Postgres** | Persistent relational store with migrations, constraints, hosted free tier |
-| Tunnel / host | **ngrok** locally, **Railway** for deploy | Matches challenge hosting guidance |
+
+| Layer             | Choice                                    | Justification                                                                        |
+| ----------------- | ----------------------------------------- | ------------------------------------------------------------------------------------ |
+| Telephony + voice | **Vapi**                                  | Fastest path to STT/TTS + tool calling within a short build window                   |
+| Backend           | **Node.js + Express + TypeScript**        | Clear layers, fast iteration, strong typing                                          |
+| LLM (server-side) | **Groq / Dashscope** (OpenAI-compatible)  | Used for optional server features; live call LLM is configured on the Vapi assistant |
+| Database          | **Supabase Postgres**                     | Persistent relational store with migrations, constraints, hosted free tier           |
+| Tunnel / host     | **ngrok** locally, **Railway** for deploy | Matches challenge hosting guidance                                                   |
+
 
 ## Architecture
 
@@ -114,13 +120,15 @@ Auth: header `x-api-key: <ADMIN_API_KEY>`.
 
 Envelope: `{ "data": ..., "error": null }` or `{ "data": null, "error": { "code", "message", "details?" } }`.
 
-| Method | Path | Notes |
-|---|---|---|
-| `GET` | `/patients` | Filters: `?last_name=&date_of_birth=&phone_number=` |
-| `GET` | `/patients/:id` | UUID `patient_id` |
-| `POST` | `/patients` | Create (201) |
-| `PUT` | `/patients/:id` | Partial update |
-| `DELETE` | `/patients/:id` | Soft-delete (`deleted_at`) |
+
+| Method   | Path            | Notes                                               |
+| -------- | --------------- | --------------------------------------------------- |
+| `GET`    | `/patients`     | Filters: `?last_name=&date_of_birth=&phone_number=` |
+| `GET`    | `/patients/:id` | UUID `patient_id`                                   |
+| `POST`   | `/patients`     | Create (201)                                        |
+| `PUT`    | `/patients/:id` | Partial update                                      |
+| `DELETE` | `/patients/:id` | Soft-delete (`deleted_at`)                          |
+
 
 Examples:
 
@@ -149,8 +157,8 @@ Flow:
 2. Offer optional insurance / emergency contact / preferred language.
 3. **Read back all fields** and get explicit confirmation.
 4. Persist via tools (`confirmed: true` required):
-   - `lookup_patient_by_phone` — duplicate detection
-   - `register_patient` / `update_patient`
+  - `lookup_patient_by_phone` — duplicate detection
+  - `register_patient` / `update_patient`
 5. Close with “You're all set, [First Name].” Optional mocked `schedule_appointment`.
 
 Invalid fields are re-prompted specifically. Failed DB writes return a tool error so the agent can apologize (no silent failure). Mid-call drops do **not** create partial patient rows.
@@ -169,13 +177,15 @@ Guide: [`docs/vapi-mcp-tools.md`](docs/vapi-mcp-tools.md).
 
 ## Other HTTP endpoints
 
-| Method | Path | Auth |
-|---|---|---|
-| `GET` | `/health` | — |
-| `GET` | `/ready` | — |
-| `POST` | `/webhooks/vapi` | Bearer / `x-vapi-secret` |
-| `GET/POST/PATCH` | `/api/agents` | `x-api-key` |
-| `POST` | `/api/intents/detect` | `x-api-key` |
+
+| Method           | Path                  | Auth                     |
+| ---------------- | --------------------- | ------------------------ |
+| `GET`            | `/health`             | —                        |
+| `GET`            | `/ready`              | —                        |
+| `POST`           | `/webhooks/vapi`      | Bearer / `x-vapi-secret` |
+| `GET/POST/PATCH` | `/api/agents`         | `x-api-key`              |
+| `POST`           | `/api/intents/detect` | `x-api-key`              |
+
 
 ## Database
 
@@ -212,7 +222,7 @@ Coverage includes patient validators (name/DOB/phone/state/zip), confirm-gate on
 
 ## Railway
 
-Live service: **https://api-production-97dea.up.railway.app**
+Live service: **[https://api-production-97dea.up.railway.app](https://api-production-97dea.up.railway.app)**
 
 ```bash
 npx @railway/cli login
@@ -241,3 +251,4 @@ Point Vapi assistant **Server URL** and tool servers at:
 - `src/tools/patients/` — voice tools
 - `prompts/system/patient-registration.md` — intake prompt
 - `supabase/migrations/00004_patients.sql` — schema + seed
+
